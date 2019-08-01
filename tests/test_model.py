@@ -4,8 +4,7 @@ from orders import db
 
 def test_creation(app, fake):
     from orders.model import Worker, WorkOrder
-    db.create_all()
-
+    
     w1 = Worker(
         name=fake.name(),
         email=fake.email()

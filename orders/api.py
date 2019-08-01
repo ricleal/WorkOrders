@@ -1,5 +1,5 @@
 
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api, Resource, abort, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
@@ -15,16 +15,25 @@ api = Api(app)
 
 class WorkerResource(Resource):
     '''
-    Class that handles REST for '/books/<int:book_id>'
-    get, delete and put (update)
+
     '''
 
     def post(self):
         ''' create a worker '''
-        pass
+        data = request.get_json()
+        worker_schema.validate(data)
+        # TODO
 
     def delete(self, worker_id):
-        pass
+        try:
+            worker = Worker.query.get(worker_id)
+            print("->", worker)
+            db.session.delete(worker)
+            db.session.commit()
+            return '', 204
+        except Exception as e:
+            print(str(e))
+            return 'Not Found {}'.format(worker_id), 404
 
     def put(self, worker_id):
         ''' Assigning a worker to an order
@@ -48,7 +57,7 @@ class WorkOrderResource(Resource):
         else:
             orders = WorkOrder.query.filter(
                 WorkOrder.workers.any(id=worker_id)).all()
-            result=work_orders_schema.dump(orders)
+            result = work_orders_schema.dump(orders)
             return result.data
 
 
@@ -58,4 +67,4 @@ api.add_resource(WorkOrderResource, '/workorder', '/workorder/<int:worker_id>')
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug=True)
