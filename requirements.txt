@@ -1,0 +1,15 @@
+flask
+flask-restful
+json-schema
+flask_restplus
+cachetools
+sqlalchemy
+flask-sqlalchemy
+flask_marshmallow
+marshmallow-sqlalchemy
+Faker
+python-dotenv
+
+#
+pytest
+
