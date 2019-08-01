@@ -28,10 +28,27 @@ def test_delete(app, fake):
     worker = Worker.query.get(worker_obj.id)
     print("+++++++++++++", worker)
 
+    data = {
+        "email": "ksanchez@yahoo.com",
+        "name": "Chad Spears",
+    }
+
     with app.test_client() as c:
+
+        # Insert
+        response = c.post('/worker', data=json.dumps(data),
+                          content_type='application/json')
+        print(response.data)
+        assert response.status_code == 201
+        assert 'inserted_id' in _get_response_data_as_dict(response).keys()
+
+        response = c.get('/worker/1')
+        print(response.data)
+        assert response.status_code == 200
+        assert '' == response.data.decode('utf-8')
+
         response = c.delete('/worker/1',
-                             content_type='application/json')
+                            content_type='application/json')
         print(response.data)
         assert response.status_code == 204
         assert '' == response.data.decode('utf-8')
-

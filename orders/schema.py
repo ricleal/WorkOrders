@@ -22,7 +22,7 @@ class WorkOrderSchema(ModelSchema):
         sqla_session = db.session
 
 
-worker_schema = WorkerSchema()
+worker_schema = WorkerSchema(transient=True)
 work_order_schema = WorkOrderSchema()
 work_orders_schema = WorkOrderSchema(many=True)
 

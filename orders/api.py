@@ -18,11 +18,32 @@ class WorkerResource(Resource):
 
     '''
 
+    def get(self, worker_id):
+        ''' not necessary but just for testing '''
+        worker = Worker.query.get(worker_id)
+        if not worker:
+            abort(404, message="Worker {} doesn't exist".format(worker_id))
+        else:
+            result = worker_schema.dump(worker)
+            return result
+
     def post(self):
         ''' create a worker '''
         data = request.get_json()
-        worker_schema.validate(data)
-        # TODO
+        valid = worker_schema.validate(data)
+        if valid:
+            try:
+                w = Worker(
+                    name=data['name'],
+                    email=data['email']
+                )
+                db.session.add(w)
+                db.session.commit()
+            except Exception as e:
+                return 'Something wrong', 500    
+            return '', 201
+        else:
+            return 'Unprocessable Entity', 422
 
     def delete(self, worker_id):
         try:

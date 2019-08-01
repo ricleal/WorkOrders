@@ -7,7 +7,7 @@ db = SQLAlchemy()
 
 def create_app(config_class=Config):
     """Construct the core application."""
-    app = Flask(__name__, instance_relative_config=False)
+    app = Flask(__name__)
     app.config.from_object(config_class)
     #app.config.from_pyfile('config.py')
 
