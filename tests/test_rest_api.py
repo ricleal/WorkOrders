@@ -1,8 +1,8 @@
 import json
 
 import pytest
-from orders import db
 
+from orders import db
 from orders.model import Worker
 
 
@@ -24,31 +24,32 @@ def _create_worker(fake):
 def test_delete(app, fake):
 
     worker_obj = _create_worker(fake)
-    print("\n****", worker_obj.id)
+    # print("\n****", worker_obj.id)
     worker = Worker.query.get(worker_obj.id)
-    print("+++++++++++++", worker)
+    # print("+++++++++++++", worker)
 
     data = {
         "email": "ksanchez@yahoo.com",
-        "name": "Chad Spears",
+        "name": "Chad Spears"
     }
+    c = app.test_client()
 
-    with app.test_client() as c:
+    # Insert
+    response = c.post('/worker', data=json.dumps(data),
+                      content_type='application/json')
+    print(response.data)
+    assert response.status_code == 201
+    #assert '' == response.data.decode('utf-8')
 
-        # Insert
-        response = c.post('/worker', data=json.dumps(data),
-                          content_type='application/json')
-        print(response.data)
-        assert response.status_code == 201
-        assert 'inserted_id' in _get_response_data_as_dict(response).keys()
 
-        response = c.get('/worker/1')
-        print(response.data)
-        assert response.status_code == 200
-        assert '' == response.data.decode('utf-8')
+    response = c.get('/worker/1')
+    print(response.data)
+    assert response.status_code == 200
+    d = _get_response_data_as_dict(response)
+    assert d['name'] and d['email']
 
-        response = c.delete('/worker/1',
-                            content_type='application/json')
-        print(response.data)
-        assert response.status_code == 204
-        assert '' == response.data.decode('utf-8')
+    response = c.delete('/worker/1',
+                        content_type='application/json')
+    print(response.data)
+    assert response.status_code == 204
+    assert '' == response.data.decode('utf-8')
