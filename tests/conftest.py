@@ -4,7 +4,7 @@ from orders import create_app
 from orders.config import TestingConfig
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def app():
     app = create_app(TestingConfig)
     app_context = app.test_request_context()
@@ -15,7 +15,7 @@ def app():
     app_context.pop()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def db(app):
     from orders import db
     db.create_all()
@@ -26,7 +26,7 @@ def db(app):
     db.drop_all()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def fake():
     f = Faker()
     # f.seed(123)

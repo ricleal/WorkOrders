@@ -1,3 +1,4 @@
+import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config
@@ -5,7 +6,7 @@ from .config import Config
 from flask_restful import Api
 
 db = SQLAlchemy()
-import logging
+
 
 def create_app(config_class=Config):
     """Construct the core application."""
@@ -13,8 +14,8 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
     # app.config.from_pyfile('config.py')
 
-    # Create api
-    api = Api(app)
+    # Create restful api (this the only way to have the prefix)
+    api = Api(app, prefix=app.config['APPLICATION_ROOT'])
 
     register_resources(api)
     setup_logging(app)
@@ -29,14 +30,15 @@ def create_app(config_class=Config):
 def register_resources(api):
     from .resources import WorkerResource, WorkOrderResource
     # https://stackoverflow.com/questions/32419519/get-with-and-without-parameter-in-flask-restful
-    api.add_resource(WorkerResource, '/worker', '/worker/<int:worker_id>')
+    api.add_resource(WorkerResource, '/worker', '/worker/<int:worker_id>',
+                     '/worker/<int:worker_id>/<int:work_order_id>')
     api.add_resource(WorkOrderResource, '/workorder',
                      '/workorder/<int:worker_id>')
 
 
 def setup_logging(app):
-    logger = logging.getLogger()
     if app.debug:
-        logger.setLevel(logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG)
+        app.logger.setLevel(logging.DEBUG)
     else:
-        logger.setLevel(logging.INFO)
+        logging.basicConfig(level=logging.INFO)
