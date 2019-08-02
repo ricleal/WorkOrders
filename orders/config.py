@@ -14,8 +14,8 @@ class Config:
 
 class TestingConfig(Config):
     FLASK_DEBUG = True
-    SQLALCHEMY_DATABASE_URI =  os.getenv("DATABASE_URI")
-    #'sqlite:///:memory:'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     TESTING = True
     DEBUG = True # LOG
     APPLICATION_ROOT = ''
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

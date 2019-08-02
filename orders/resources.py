@@ -1,3 +1,5 @@
+import logging
+
 from flask import request
 from flask_restful import Resource, abort, reqparse
 from sqlalchemy import desc
@@ -6,7 +8,6 @@ from . import db
 from .model import Worker, WorkOrder
 from .schema import work_order_schema, work_orders_schema, worker_schema
 
-import logging
 logger = logging.getLogger(__name__)
 
 class WorkerResource(Resource):
@@ -35,19 +36,16 @@ class WorkerResource(Resource):
                 )
                 db.session.add(w)
                 db.session.commit()
-                logger.debug(w)
+                return w.id, 201
             except Exception as e:
                 return 'Something wrong: {}'.format(str(e)), 500
-            logger.debug("Validation successful")
-            return '', 201
         else:
             return 'Validation Error: {}'.format(validation_dict), 422
 
     def delete(self, worker_id):
         try:
             worker = Worker.query.get(worker_id)
-            logger.debug('this is a DEBUG message')
-            print("->", worker)
+            logger.debug('Delete: {}'.format( worker))
             db.session.delete(worker)
             db.session.commit()
             return '', 204

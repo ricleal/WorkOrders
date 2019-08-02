@@ -9,7 +9,3 @@ flask_marshmallow
 marshmallow-sqlalchemy
 Faker
 python-dotenv
-
-#
-pytest
-
