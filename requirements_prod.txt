@@ -1,3 +1,4 @@
 -r requirements.txt
 
-gunicorn
+# because of heroku moved this to requirements
+# gunicorn

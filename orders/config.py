@@ -10,8 +10,8 @@ class Config:
 
 class ProductionConfig(Config):
     FLASK_DEBUG = False
-    SECRET_KEY = os.getenv("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
+    SECRET_KEY = os.getenv("SECRET_KEY", "12345")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI", "sqlite:///orders.db")
     APPLICATION_ROOT = '/api/v1'
 
 
