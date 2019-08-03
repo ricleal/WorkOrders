@@ -16,3 +16,19 @@ skills. This will be evaluated based on your Readme.md file.
 
 `gunicorn -w 2 --bind 0.0.0.0:8000 run_prod:app`
 
+
+
+# Heroku
+
+echo "web: gunicorn run_prod:app" > Procfile
+
+git push heroku master
+
+heroku run "pip install -r requirements_prod.txt"
+
+heroku ps:scale web=1
+
+heroku logs --tail
+
+heroku open
+
