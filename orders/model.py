@@ -1,7 +1,13 @@
 from . import db
 
-# Many-to-Many Relationship
-# Because one worker can be working in many work orders at the same time
+'''
+SQLAlchemy models are defined in this file.
+A to Many-to-Many Relationship is used to define the relashionship between
+Workers and WorkOrders.
+A Worker can work on many WorkOrders
+A WorkOrder can have multiple Workers.
+'''
+
 
 work_order_workers = db.Table(
     'work_order_workers',
@@ -23,7 +29,7 @@ class Worker(db.Model):
         backref=db.backref('workers', lazy=True))
 
     def __repr__(self):
-        ret = 'Worker: %r\n' % self.name
+        ret = 'Worker ({}): {}\n'.format(self.id, self.name)
         orders_str = ""
         for order in self.worker_orders:
             orders_str += "* " + order.title + "\n"
@@ -39,7 +45,7 @@ class WorkOrder(db.Model):
     deadline = db.Column(db.Date(), nullable=True)
 
     def __repr__(self):
-        ret = 'WorkOrder: %r\n' % self.title
+        ret = 'WorkOrder ({}): {}\n'.format(self.id, self.title)
         workers_str = ""
         for worker in self.workers:
             workers_str += "- " + worker.name + "\n"

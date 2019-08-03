@@ -12,6 +12,17 @@ criterion.
 - Communication: We are looking for candidates with strong communication
 skills. This will be evaluated based on your Readme.md file.
 
+# 
+
+Need to .env (See env.base for a template) file or edit the 2nd argument of getenv
+
+
+
+# Test
+
+pytest -vs
+
+
 # Production
 
 `gunicorn -w 2 --bind 0.0.0.0:8000 run_prod:app`
@@ -22,9 +33,11 @@ skills. This will be evaluated based on your Readme.md file.
 
 echo "web: gunicorn run_prod:app" > Procfile
 
+gunicorn must be in the requirements.txt
+
 git push heroku master
 
-heroku run "pip install -r requirements_prod.txt"
+If it does not start:
 
 heroku ps:scale web=1
 

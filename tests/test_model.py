@@ -39,10 +39,6 @@ def test_creation(app, fake):
     db.session.flush()
     db.session.commit()
 
-    print(w1)
-    print(wo1)
-    print(wo2)
-
     assert db.session.query(Worker).filter(Worker.id == w1.id).count() == 1
     assert db.session.query(Worker).join(
         Worker.worker_orders).filter(Worker.id == w1.id).count() == 2

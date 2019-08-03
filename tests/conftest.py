@@ -4,7 +4,7 @@ from orders import create_app
 from orders.config import TestingConfig
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def app():
     app = create_app(TestingConfig)
     app_context = app.test_request_context()
@@ -15,7 +15,7 @@ def app():
     app_context.pop()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def db(app):
     from orders import db
     db.create_all()
