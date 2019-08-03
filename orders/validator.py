@@ -1,11 +1,6 @@
-  
+from flask import abort, request
 from jsonschema import validate
-import os
-import json
-from flask import request, jsonify, abort
 from jsonschema.exceptions import ValidationError
-
-
 
 worker_dic_schema = {
     "definitions": {},
@@ -78,7 +73,8 @@ work_order_dic_schema = {
             "title": "The Description Schema",
             "default": "",
             "examples": [
-                "Seek throw reality dark argue cold near all. Any feel well certainly time support bed night.\nSort here mother be ok. Once research town short media two.\nSmall home big account woman most various president. Interest project forget forget hundred game special world.\nPolicy thought probably player usually girl. Activity in line military past nature heart. Democratic pretty response single.\nFigure down chance young. Help base ok indeed article security worry son.\nMay may market option. Law wrong training save.\nReally election left son girl man. Writer bar before near region marriage.\nInternational everybody allow war. Reason most value just."
+                "Seek throw reality dark argue cold near all. Any feel well "
+                "certainly time support bed night.\nSort here mother be ok."
             ],
             "pattern": "^(.*)$"
         }

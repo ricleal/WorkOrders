@@ -1,14 +1,16 @@
 import logging
+from datetime import datetime
 
 from flask import request
-from flask_restful import Resource, abort, reqparse
+from flask_restful import Resource, abort
 from sqlalchemy import desc
-from datetime import datetime
-from pprint import pformat
+
 from . import db
 from .model import Worker, WorkOrder
-from .schema import work_order_schema, work_orders_schema, worker_schema
-from .validator import worker_dic_schema, work_order_dic_schema, validator_decorator
+from .schema import work_orders_schema, worker_schema
+from .validator import (validator_decorator, work_order_dic_schema,
+                        worker_dic_schema)
+
 logger = logging.getLogger(__name__)
 
 
@@ -60,16 +62,17 @@ class WorkerResource(Resource):
         updates worker: w1.worker_orders.append(wo1)'''
         try:
             n_workers = db.session.query(WorkOrder).join(
-                WorkOrder.workers).filter(WorkOrder.id == work_order_id).count()
+                WorkOrder.workers).filter(WorkOrder.id ==
+                                          work_order_id).count()
             if n_workers >= 5:
-                return {"message": "Order is full"}, 404
+                return abort(404, message="Order is full")
             else:
                 work_order = WorkOrder.query.get(work_order_id)
                 worker = Worker.query.get(worker_id)
                 worker.worker_orders.append(work_order)
                 db.session.commit()
-                return {"message": "Worker {} assigned to order {}.".format(
-                    worker, work_order)}, 200
+                return "Worker {} assigned to order {}.".format(
+                    worker, work_order), 200
         except Exception as e:
             logger.error(str(e))
             return 'Something wrong happened: {}'.format(e), 404

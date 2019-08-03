@@ -1,7 +1,5 @@
 import json
 
-import pytest
-
 from orders.model import Worker
 
 

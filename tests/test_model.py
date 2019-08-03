@@ -1,10 +1,12 @@
 import random
 from datetime import datetime
+
 from orders import db
+
 
 def test_creation(app, fake):
     from orders.model import Worker, WorkOrder
-    
+
     w1 = Worker(
         name=fake.name(),
         email=fake.email()
@@ -33,7 +35,7 @@ def test_creation(app, fake):
     db.session.add(w2)
 
     wo1.workers.append(w2)
-    
+
     db.session.flush()
     db.session.commit()
 

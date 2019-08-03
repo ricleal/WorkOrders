@@ -11,3 +11,8 @@ criterion.
 - Testing: Did you write some tests for the solution? How is the coverage?
 - Communication: We are looking for candidates with strong communication
 skills. This will be evaluated based on your Readme.md file.
+
+# Production
+
+`gunicorn -w 2 --bind 0.0.0.0:8000 run_prod:app`
+

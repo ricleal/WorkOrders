@@ -12,7 +12,6 @@ def create_app(config_class=Config):
     """Construct the core application."""
     app = Flask(__name__)
     app.config.from_object(config_class)
-    # app.config.from_pyfile('config.py')
 
     # Create restful api (this the only way to have the prefix)
     api = Api(app, prefix=app.config['APPLICATION_ROOT'])
