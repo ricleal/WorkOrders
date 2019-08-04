@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import request
 from flask_restful import Resource, abort
-from sqlalchemy import desc
+from sqlalchemy import asc
 from sqlalchemy.exc import SQLAlchemyError
 
 from . import db
@@ -116,7 +116,7 @@ class WorkOrderResource(Resource):
         if worker_id is None:
             logger.debug("Getting all work orders...")
             try:
-                orders = WorkOrder.query.order_by(desc(
+                orders = WorkOrder.query.order_by(asc(
                     WorkOrder.deadline)).all()
             except SQLAlchemyError as e:
                 logger.error(e)

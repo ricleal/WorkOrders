@@ -1,8 +1,9 @@
 # Introduction
 
-Back-end of a RESTFul app that has work orders and workers.
+This code represents the back-end of a RESTFul app.
+The app has work orders and workers.
 A work order is a job to be completed by one or more workers
-(up to 5 workers can work on the same order)
+(up to 5 workers can work on the same order).
 
 The worker has the following information:
 - The worker name
@@ -17,11 +18,18 @@ The work order has:
 
 # Installation
 
-It's better to use a virtual environment to deploy the app locally.
+**Requirements:**
+- Python 3.6
+- PIP
+- Python Virtual Environment (`virtualwnv`) is optional but recommended.
 
-```
+
+To deploy the app locally, first create a virtual environment and activate it(optional):
+
+```sh
+# virtualenv creation
 virtualenv venv -p python3
-
+# virtualenv activation
 source venv/bin/activate
 ```
 
@@ -30,10 +38,8 @@ Install the requirements:
 pip install -r requirements.txt
 ```
 
-Create an `.env` file. See `env.base` for a template.
-If the file / environment variable does not exist, the default argument of `os.getenv`
-is used. See `orders/config.py` for more details.
-
+Create an `.env` file (file with the definition of environment variables). See `env.base` for a template.
+If the file / environment variable does not exist, the default argument (the second) of `os.getenv` is used. See `orders/config.py` for more details.
 
 Fire up the app in development:
 ```
@@ -80,7 +86,7 @@ Note that in production, the end points are prefixed with: `/api/v1`
 
 ## Create a work order
 
-Note that there are no workers assigned yet to the work order.
+Note that this routine only creates a work order. There are no workers assignments involved.
 
 - HTTP Method: `POST`
 - End point: `/workorder`
@@ -201,38 +207,37 @@ One can run the tests using `pytest`. First install it:
 pip install -r requirements_test.txt
 ```
 
-Than run it calling `pytest`. 
+Then, run them calling the `pytest` command. 
 The output should be similar to the following:
 ```
 $ pytest -v
-================================================================================ test session starts =================================================================================
+============================= test session starts ==============================
 platform darwin -- Python 3.7.3, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- /Users/rhf/git/WorkOrders/venv/bin/python3.7
 cachedir: .pytest_cache
 rootdir: /Users/rhf/git/WorkOrders
 collected 6 items
 
-tests/test_model.py::test_creation PASSED                                                                                                                                      [ 16%]
-tests/test_rest_api.py::test_query PASSED                                                                                                                                      [ 33%]
-tests/test_rest_api.py::test_worker PASSED                                                                                                                                     [ 50%]
-tests/test_rest_api.py::test_assign_worker_to_work_order PASSED                                                                                                                [ 66%]
-tests/test_rest_api.py::test_work_order PASSED                                                                                                                                 [ 83%]
-tests/test_rest_api.py::test_work_order_by_worker PASSED                                                                                                                       [100%]
+tests/test_model.py::test_creation PASSED                                [ 16%]
+tests/test_rest_api.py::test_query PASSED                                [ 33%]
+tests/test_rest_api.py::test_worker PASSED                               [ 50%]
+tests/test_rest_api.py::test_assign_worker_to_work_order PASSED          [ 66%]
+tests/test_rest_api.py::test_work_order PASSED                           [ 83%]
+tests/test_rest_api.py::test_work_order_by_worker PASSED                 [100%]
 
-============================================================================== 6 passed in 0.49 seconds ==============================================================================
+=========================== 6 passed in 0.47 seconds ===========================
 ```
 
 
-
-
-# Bonus: Install it in Heroku
+# Bonus: Deploy the app in Heroku
 
 This is assumed that you:
 - Have an account in Heroku
-- Have an SSH key inside
+- Have added a public SSH key to the Heroku profile
 - Have installed locally the `heroku` application.
+- Have created an app in Heroku
 
 Create a file `Procfile` if it does not exist.
-Write in this file:
+Write the following in the file:
 ```
 web: gunicorn run_prod:app
 ```
@@ -242,12 +247,12 @@ Then do:
 git push heroku master
 ```
 
-If the app does not start:
+If the app does not start by itself (it should):
 ```
 heroku ps:scale web=1
 ```
 
-To open a browser window:
+To open a browser window with the app running:
 ```
 heroku open
 ```

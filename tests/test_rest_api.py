@@ -158,7 +158,7 @@ def test_work_order(app, db, fake):
     for i in range(len(response_list[:-1])):
         date1 = datetime.strptime(response_list[i]['deadline'], '%Y-%m-%d')
         date2 = datetime.strptime(response_list[i+1]['deadline'], '%Y-%m-%d')
-        assert date2 < date1
+        assert date2 >= date1
 
 
 def test_work_order_by_worker(app, db, fake):
