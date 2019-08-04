@@ -47,6 +47,7 @@ class WorkerResource(Resource):
         try:
             w = Worker(
                 name=data['name'],
+                company=data['company'],
                 email=data['email']
             )
             db.session.add(w)
@@ -58,6 +59,7 @@ class WorkerResource(Resource):
             return 'Something wrong: {}'.format(str(e)), 500
 
     def delete(self, worker_id):
+        ''' delete a worker '''
         try:
             worker = Worker.query.get(worker_id)
             if not worker:
@@ -102,6 +104,9 @@ class WorkerResource(Resource):
 
 
 class WorkOrderResource(Resource):
+    '''
+    All the Work Order related REST actions are coded here
+    '''
 
     def get(self, worker_id=None):
         ''' Fetch all work orders:
@@ -119,6 +124,8 @@ class WorkOrderResource(Resource):
             result = work_orders_schema.dump(orders)
             return result.data
         else:
+            logger.debug("Getting work orders for worker.id = {}".format(
+                worker_id))
             try:
                 orders = WorkOrder.query.filter(
                     WorkOrder.workers.any(id=worker_id)).all()
@@ -134,15 +141,14 @@ class WorkOrderResource(Resource):
             result = work_orders_schema.dump(orders)
             return result.data
 
-
     @validator_decorator(work_order_dic_schema)
     def post(self):
-        ''' create a worker '''
+        ''' create a work order '''
         data = request.get_json()
         try:
             wo = WorkOrder(
                 title=data['title'],
-                description=data['description'],
+                description=data.get('description', ''),  # optional
                 deadline=datetime.strptime(
                     data['deadline'], "%Y-%m-%d").date(),
             )

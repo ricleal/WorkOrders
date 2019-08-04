@@ -13,6 +13,7 @@ def _create_worker(db, fake):
 
     w = Worker(
         name=fake.name(),
+        company=fake.company(),
         email=fake.email()
     )
     db.session.add(w)
@@ -20,13 +21,14 @@ def _create_worker(db, fake):
     return w
 
 
-def _create_work_order(db, fake):
+def _create_work_order(db, fake, description=True):
 
     wo = WorkOrder(
         title=fake.sentence(nb_words=random.randint(4, 10)),
-        description=fake.text(max_nb_chars=random.randint(50, 100)),
         deadline=datetime.strptime(fake.date(), "%Y-%m-%d").date(),
     )
+    if description:
+        wo.description = fake.text(max_nb_chars=random.randint(50, 100))
     db.session.add(wo)
     db.session.commit()
     return wo
@@ -36,7 +38,8 @@ def test_query(db, fake):
 
     worker_obj = _create_worker(db, fake)
     worker = Worker.query.get(worker_obj.id)
-    assert worker.__dict__['name'] and worker.__dict__['email']
+    assert worker.__dict__['name'] and worker.__dict__['company'] and \
+        worker.__dict__['email']
 
 
 def test_worker(app, fake):
@@ -46,8 +49,9 @@ def test_worker(app, fake):
     '''
 
     data = {
-        "email": "ksanchez@yahoo.com",
-        "name": "Chad Spears"
+        "name": "Chad Spears",
+        "company": "Soft skills LLC",
+        "email": "ksanchez@yahoo.com"
     }
 
     c = app.test_client()
@@ -72,7 +76,7 @@ def test_worker(app, fake):
     response = c.get('/worker/{}'.format(response_data))
     assert response.status_code == 200
     d = _get_response_data_as_dict(response)
-    assert d['name'] and d['email']
+    assert d['name'] and d['email'] and d['company']
 
     # get invalid
     response = c.get('/worker/{}'.format(sys.maxsize))
@@ -144,7 +148,8 @@ def test_work_order(app, db, fake):
     assert type(d) == list and len(d) == 1
 
     # Added 5 orders: Get all orders
-    [_create_work_order(db, fake) for _ in range(5)]
+    [_create_work_order(db, fake) for _ in range(4)]
+    _create_work_order(db, fake, description=False)
     response = c.get('/workorder')
     assert response.status_code == 200
     response_list = _get_response_data_as_dict(response)

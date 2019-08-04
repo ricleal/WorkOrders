@@ -4,6 +4,11 @@ from marshmallow_sqlalchemy import ModelSchema
 from .model import Worker, WorkOrder
 from . import db
 
+'''
+Class with the schemas of the SQLAlchemy models
+Usefull when converting SQLAlchemy objects to json
+'''
+
 
 class WorkerSchema(ModelSchema):
 

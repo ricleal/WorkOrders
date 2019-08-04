@@ -9,6 +9,7 @@ def test_creation(app, fake):
 
     w1 = Worker(
         name=fake.name(),
+        company=fake.company(),
         email=fake.email()
     )
 
@@ -20,7 +21,6 @@ def test_creation(app, fake):
 
     wo2 = WorkOrder(
         title=fake.sentence(nb_words=random.randint(4, 10)),
-        description=fake.text(max_nb_chars=random.randint(100, 1000)),
         deadline=datetime.strptime(fake.date(), "%Y-%m-%d").date(),
     )
 
@@ -30,6 +30,7 @@ def test_creation(app, fake):
 
     w2 = Worker(
         name=fake.name(),
+        company=fake.company(),
         email=fake.email()
     )
     db.session.add(w2)

@@ -12,6 +12,7 @@ All methods that should be called before at initialization should go into
 '''
 
 db = SQLAlchemy()
+logger = logging.getLogger(__name__)
 
 
 def create_app(config_class=Config):
@@ -35,7 +36,7 @@ def create_app(config_class=Config):
 def register_resources(api):
     '''
     register the resources: suffix of URLs possible for the REST interface
-    ''' 
+    '''
     from .resources import WorkerResource, WorkOrderResource
     api.add_resource(WorkerResource, '/worker', '/worker/<int:worker_id>',
                      '/worker/<int:worker_id>/workorder/<int:work_order_id>')
@@ -49,7 +50,8 @@ def setup_logging(app):
         logger = logging.getLogger()
         handler = logging.StreamHandler()
         formatter = logging.Formatter(
-                '%(name)s :: %(filename)s:%(lineno)d (%(funcName)s) : %(levelname)-8s %(message)s')
+            '%(name)s :: %(filename)s:%(lineno)d (%(funcName)s) : '
+            '%(levelname)-8s %(message)s')
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         logger.setLevel(logging.DEBUG)
@@ -57,5 +59,3 @@ def setup_logging(app):
         # the `faker` outputs too much
         logger_faker = logging.getLogger('faker.factory')
         logger_faker.setLevel(logging.INFO)
-
-

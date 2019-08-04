@@ -1,5 +1,6 @@
 import pytest
 from faker import Faker
+from faker.providers import company
 from orders import create_app
 from orders.config import TestingConfig
 
@@ -29,5 +30,6 @@ def db(app):
 @pytest.fixture(scope="session")
 def fake():
     f = Faker()
+    f.add_provider(company)
     # f.seed(123)
     return f

@@ -22,6 +22,7 @@ class Worker(db.Model):
     __tablename__ = 'worker'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=False)
+    company = db.Column(db.String(256), nullable=False)
     email = db.Column(db.String(128), nullable=True)
 
     worker_orders = db.relationship(

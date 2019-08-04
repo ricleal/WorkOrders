@@ -2,6 +2,13 @@ from flask import abort, request
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
+'''
+Validator for the REST XML valid schema
+They were generated with example JSON and the online tool:
+https://jsonschema.net/
+'''
+
+
 worker_dic_schema = {
     "definitions": {},
     "$schema": "http://json-schema.org/draft-07/schema#",
@@ -10,6 +17,7 @@ worker_dic_schema = {
     "title": "The Root Schema",
     "required": [
         "name",
+        "company",
         "email"
     ],
     "properties": {
@@ -20,6 +28,16 @@ worker_dic_schema = {
             "default": "",
             "examples": [
                 "Lisa Freeman"
+            ],
+            "pattern": "^(.*)$"
+        },
+        "company": {
+            "$id": "#/properties/company",
+            "type": "string",
+            "title": "The Company Schema",
+            "default": "",
+            "examples": [
+                "Luso et al."
             ],
             "pattern": "^(.*)$"
         },
@@ -83,8 +101,9 @@ work_order_dic_schema = {
 
 
 def validator_decorator(schema_dic):
+    ''' Validator decorator to use in any of the put
+    function of the Resources.'''
     def decorator(func):
-        ''' Validator decorator to use in Flask '''
         def func_wrapper(*args, **kwargs):
             json_data = request.get_json(force=True)
             try:
