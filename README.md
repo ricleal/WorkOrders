@@ -15,6 +15,13 @@ The work order has:
 - Description
 - A Deadline to be completed
 
+# Live demo
+
+See:
+https://ricleal.herokuapp.com
+
+For example:
+https://ricleal.herokuapp.com/api/v1/workorder
 
 # Installation
 
