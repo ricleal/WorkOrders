@@ -13,7 +13,7 @@ from .validator import (validator_decorator, work_order_dic_schema,
                         worker_dic_schema)
 
 '''
-This is the hard of the RESTFul application.
+This is the heart of the RESTFul application.
 '''
 
 logger = logging.getLogger(__name__)
